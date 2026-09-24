@@ -1,0 +1,65 @@
+### === Java / Maven (all backend modules) === ###
+target/
+*.class
+*.jar
+*.war
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Maven wrapper (keep the wrapper jar tracked if you use one; ignore local config) ###
+.mvn/wrapper/maven-wrapper.properties.local
+
+### === Spring Boot === ###
+*.log
+application-local.yml
+application-local.properties
+*.pid
+
+### === Lucene index data (generated at runtime, don't commit) === ###
+/logstream-ingestion/index-data/
+*.cfs
+*.cfe
+*.si
+*.segments*
+
+### === Protobuf generated sources (regenerated on build) === ###
+**/generated-sources/
+**/generated-test-sources/
+
+### === React / Node (logstream-dashboard) === ###
+logstream-dashboard/node_modules/
+logstream-dashboard/build/
+logstream-dashboard/dist/
+logstream-dashboard/.env
+logstream-dashboard/.env.local
+logstream-dashboard/npm-debug.log*
+logstream-dashboard/yarn-debug.log*
+logstream-dashboard/yarn-error.log*
+logstream-dashboard/.eslintcache
+
+### === IDEs === ###
+.idea/
+*.iml
+*.iws
+.vscode/
+*.code-workspace
+.settings/
+.classpath
+.project
+.factorypath
+
+### === OS files === ###
+.DS_Store
+Thumbs.db
+desktop.ini
+
+### === Env / secrets === ###
+.env
+*.env.local
+*.pem
+*.key
+
+### === Misc build artifacts === ###
+*.tmp
+*.bak
+out/
