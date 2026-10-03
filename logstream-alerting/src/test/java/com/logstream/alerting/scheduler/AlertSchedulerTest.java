@@ -8,6 +8,6 @@ public class AlertSchedulerTest {
     void schedulerTest() {
         AlertScheduler scheduler = new AlertScheduler();
 
-        assertDoesNotThrow(() -> scheduler.runAlerts());
+        assertDoesNotThrow(scheduler::runAlerts);
     }
 }
