@@ -65,7 +65,7 @@ log-analytics-monitoring-system/
 ├── logstream-alerting/              # Member 4 — Alerting, Testing & Performance
 │   ├── pom.xml
 │   └── src/main/java/com/logstream/alerting/
-│       ├── scheduler/               # @Scheduled rule evaluator
+│       ├── com.logstream.alerting.scheduler/               # @Scheduled rule evaluator
 │       ├── rules/                   # rule definitions, threshold logic
 │       ├── webhook/                 # simulated webhook client
 │       └── config/
