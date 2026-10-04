@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package logstream.v1;
+
+option java_package = "com.logstream.common.proto";
+option java_multiple_files = true;
+option java_outer_classname = "LogMessageProto";
+
+enum LogLevel {
+  LOG_LEVEL_UNSPECIFIED = 0;
+  TRACE = 1;
+  DEBUG = 2;
+  INFO = 3;
+  WARN = 4;
+  ERROR = 5;
+  FATAL = 6;
+}
+
+message LogMessage {
+  int64 timestamp_millis = 1;
+  LogLevel level = 2;
+  string service = 3;
+  string host = 4;
+  string message = 5;
+  map<string, string> attributes = 6;
+  string trace_id = 7;
+  string raw = 8;
+}
+
+message LogBatch {
+  repeated LogMessage logs = 1;
+}
+
+message IngestResponse {
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated string errors = 3;
+}
+
+service LogIngestionService {
+  rpc Ingest(LogMessage) returns (IngestResponse);
+
+  rpc IngestBatch(LogBatch) returns (IngestResponse);
+
+  rpc IngestStream(stream LogMessage) returns (IngestResponse);
+}
