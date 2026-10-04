@@ -22,9 +22,9 @@ public class AlertScheduler {
     @Scheduled(fixedRate = 60000)
     public void runAlerts() {
 
-        int logCount = 120;
+        int simulatedLogCount = 120;
 
-        boolean triggered = evaluator.shouldTrigger(alertRule, logCount);
+        boolean triggered = evaluator.shouldTrigger(alertRule, simulatedLogCount);
         if (triggered) {
             webhook.send("Alert triggered: " + alertRule.getName());
         }
@@ -33,7 +33,7 @@ public class AlertScheduler {
                 "Checking alert: " + alertRule.getName()
                         + " | Query: " + alertRule.getQuery()
                         + " | Threshold: " + alertRule.getThreshold()
-                        + " | Log Count: " + logCount
+                        + " | Simulated Log Count: " + simulatedLogCount
                         + " | Triggered: " + triggered
         );
     }
