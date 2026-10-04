@@ -34,4 +34,18 @@ public class AlertEvaluatorTest {
 
         assertFalse(evaluator.shouldTrigger(rule, 80));
     }
+
+    @Test
+    void shouldNotTriggerWhenLogCountEqualsThreshold() {
+
+        AlertRule rule = new AlertRule(
+                "Error Alert",
+                "ERROR",
+                100
+        );
+
+        AlertEvaluator evaluator = new AlertEvaluator();
+
+        assertFalse(evaluator.shouldTrigger(rule, 100));
+    }
 }
