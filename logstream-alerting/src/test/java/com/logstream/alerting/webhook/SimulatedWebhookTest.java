@@ -2,7 +2,7 @@ package com.logstream.alerting.webhook;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SimulatedWebhookTest {
 
@@ -10,6 +10,8 @@ public class SimulatedWebhookTest {
     void shouldTriggerWebhook() {
         SimulatedWebhook webhook = new SimulatedWebhook();
 
-        assertDoesNotThrow(() -> webhook.send("Test alert"));
+        webhook.send("Test alert");
+
+        assertEquals("Test alert", webhook.getLastMessage());
     }
 }
