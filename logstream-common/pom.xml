@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>logstream-common</artifactId>
+    <!-- Member 1 (Log Ingestion & Lucene Core) - Week 1: shared contracts module with protobuf code generation -->
     <name>LogStream common contracts</name>
     <description>Shared protobuf schema, DTOs and the search interface used by every module.</description>
 

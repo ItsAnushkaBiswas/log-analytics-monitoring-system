@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 1
+ * gRPC endpoint that receives logs as single messages, batches or streams.
+ */
 @Component
 public class LogIngestionGrpcService extends LogIngestionServiceGrpc.LogIngestionServiceImplBase {
     private static final Logger log = LoggerFactory.getLogger(LogIngestionGrpcService.class);
@@ -38,6 +42,7 @@ public class LogIngestionGrpcService extends LogIngestionServiceGrpc.LogIngestio
         respond(responseObserver, () -> ingestion.ingest(request.getLogsList(), 0));
     }
 
+    // Week 4: streaming ingestion buffers logs and indexes them in batches for throughput
     @Override
     public StreamObserver<LogMessage> ingestStream(StreamObserver<IngestResponse> responseObserver) {
         return new StreamObserver<>() {

@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>logstream-app</artifactId>
+    <!-- Member 1 (Log Ingestion & Lucene Core) - Week 1: assembles the backend modules into one runnable jar -->
     <name>LogStream application</name>
     <description>Assembles all backend modules into one runnable Spring Boot jar.</description>
 

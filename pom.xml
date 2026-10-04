@@ -13,6 +13,7 @@
 
     <groupId>com.logstream</groupId>
     <artifactId>log-analytics-monitoring-system</artifactId>
+    <!-- Member 1 (Log Ingestion & Lucene Core) - Week 1: parent build with shared versions for gRPC, Protobuf and Lucene -->
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Log Analytics Monitoring System</name>

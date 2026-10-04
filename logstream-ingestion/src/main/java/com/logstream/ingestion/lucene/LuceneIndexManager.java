@@ -26,6 +26,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 2
+ * Owns the Lucene index writer and searcher; refreshes and commits the index in the background.
+ */
 @Component
 public class LuceneIndexManager {
     private static final Logger log = LoggerFactory.getLogger(LuceneIndexManager.class);
@@ -41,6 +45,7 @@ public class LuceneIndexManager {
             Path path = Path.of(props.indexPath()).toAbsolutePath();
             this.directory = FSDirectory.open(path);
             this.analyzer = createAnalyzer();
+            // Week 4: RAM buffer size tuned for bulk indexing
             IndexWriterConfig config = new IndexWriterConfig(analyzer)
                     .setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND)
                     .setRAMBufferSizeMB(props.ramBufferMb());
@@ -56,6 +61,7 @@ public class LuceneIndexManager {
             t.setDaemon(true);
             return t;
         });
+        // Week 4: background refresh makes logs searchable; periodic commit makes them durable
         long refreshMs = props.refreshInterval().toMillis();
         long commitMs = props.commitInterval().toMillis();
         maintenance.scheduleWithFixedDelay(this::refreshQuietly, refreshMs, refreshMs, TimeUnit.MILLISECONDS);

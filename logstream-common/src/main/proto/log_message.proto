@@ -1,3 +1,5 @@
+// Member 1 (Log Ingestion & Lucene Core) - Week 1
+// Shared log message schema and gRPC ingestion service used by every module.
 syntax = "proto3";
 
 package logstream.v1;
@@ -16,6 +18,7 @@ enum LogLevel {
   FATAL = 6;
 }
 
+// Week 1: one log event; send structured fields or only the raw line
 message LogMessage {
   int64 timestamp_millis = 1;
   LogLevel level = 2;
@@ -37,6 +40,7 @@ message IngestResponse {
   repeated string errors = 3;
 }
 
+// Week 1: single, batch and streaming ingestion calls
 service LogIngestionService {
   rpc Ingest(LogMessage) returns (IngestResponse);
 

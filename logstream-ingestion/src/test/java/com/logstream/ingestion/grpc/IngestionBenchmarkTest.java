@@ -22,6 +22,10 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 4
+ * Ingestion throughput and query latency benchmark. Run with -Dbenchmark=true.
+ */
 @EnabledIfSystemProperty(named = "benchmark", matches = "true")
 class IngestionBenchmarkTest {
     private static final int CLIENTS = 4;

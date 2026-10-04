@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>logstream-ingestion</artifactId>
+    <!-- Member 1 (Log Ingestion & Lucene Core) - Weeks 1 to 4: gRPC ingestion, parsing, Lucene indexing, search and aggregations -->
     <name>LogStream ingestion &amp; Lucene core</name>
     <description>gRPC ingestion server, log parser, Lucene indexing and the LogSearchService implementation.</description>
 

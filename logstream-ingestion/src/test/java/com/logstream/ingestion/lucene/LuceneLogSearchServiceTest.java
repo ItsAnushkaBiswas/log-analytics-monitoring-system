@@ -22,6 +22,10 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 2 and Week 3
+ * Tests for search, filters, paging, histogram and group-by counts.
+ */
 class LuceneLogSearchServiceTest {
     private static final Instant T0 = Instant.parse("2026-10-04T10:00:00Z");
 

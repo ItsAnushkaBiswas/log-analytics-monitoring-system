@@ -5,6 +5,10 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.Duration;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 1
+ * Ingestion settings: gRPC port, index path, batch size and Lucene tuning values.
+ */
 @ConfigurationProperties("logstream.ingestion")
 public record IngestionProperties(
         @DefaultValue("9090") int grpcPort,

@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 4
+ * Test helper that starts the full ingestion stack on a random port.
+ */
 final class IngestionServerFixture implements AutoCloseable {
     final LuceneIndexManager index;
     final LuceneLogSearchService search;

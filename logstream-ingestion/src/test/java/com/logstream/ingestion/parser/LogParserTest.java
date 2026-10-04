@@ -14,6 +14,10 @@ import java.time.ZoneOffset;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 2
+ * Unit tests for log parsing and validation.
+ */
 class LogParserTest {
     private static final Instant NOW = Instant.parse("2026-10-04T12:00:00Z");
     private final LogParser parser = new LogParser(Clock.fixed(NOW, ZoneOffset.UTC));

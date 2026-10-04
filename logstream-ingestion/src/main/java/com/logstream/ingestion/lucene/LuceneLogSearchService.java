@@ -43,6 +43,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 2 and Week 3
+ * Lucene implementation of LogSearchService: search (Week 2), histogram and group-by counts (Week 3).
+ */
 @Service
 public class LuceneLogSearchService implements LogSearchService {
     static final int MAX_BUCKETS = 10_000;
@@ -57,6 +61,7 @@ public class LuceneLogSearchService implements LogSearchService {
         this.index = index;
     }
 
+    // Week 2: full-text search with filters, newest first
     @Override
     public SearchResult search(LogQuery query) {
         long start = System.nanoTime();
@@ -75,12 +80,14 @@ public class LuceneLogSearchService implements LogSearchService {
         });
     }
 
+    // Week 2: number of matching logs, used by alert thresholds
     @Override
     public long count(LogQuery query) {
         Query q = toLucene(query);
         return withSearcher(searcher -> (long) searcher.count(q));
     }
 
+    // Week 3: log counts per time slot, e.g. per minute
     @Override
     public List<TimeBucket> histogram(LogQuery query, Duration interval) {
         if (interval.compareTo(Duration.ofSeconds(1)) < 0) {
@@ -118,6 +125,7 @@ public class LuceneLogSearchService implements LogSearchService {
         return buckets;
     }
 
+    // Week 3: log counts grouped by level, service or host
     @Override
     public Map<String, Long> countBy(LogField field, LogQuery query) {
         Query q = toLucene(query);
@@ -130,6 +138,7 @@ public class LuceneLogSearchService implements LogSearchService {
         return sorted;
     }
 
+    // Week 2: converts LogQuery filters into a Lucene query
     Query toLucene(LogQuery query) {
         BooleanQuery.Builder b = new BooleanQuery.Builder();
         boolean any = false;
@@ -206,6 +215,7 @@ public class LuceneLogSearchService implements LogSearchService {
         }
     }
 
+    // Week 3: collectors that compute aggregations from doc values
     private static final class HistogramCollectorManager
             implements CollectorManager<HistogramCollector, Map<Long, Map<String, Long>>> {
         private final long step;

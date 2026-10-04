@@ -18,6 +18,10 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 4
+ * End-to-end tests over a real gRPC connection into the Lucene index.
+ */
 class GrpcIngestionIntegrationTest {
     @TempDir
     Path dir;

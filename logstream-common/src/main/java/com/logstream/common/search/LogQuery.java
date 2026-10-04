@@ -3,6 +3,10 @@ package com.logstream.common.search;
 import java.time.Instant;
 import java.util.Set;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 2
+ * Search filters: text, levels, services, time range and paging.
+ */
 public record LogQuery(
         String text,
         Set<String> levels,

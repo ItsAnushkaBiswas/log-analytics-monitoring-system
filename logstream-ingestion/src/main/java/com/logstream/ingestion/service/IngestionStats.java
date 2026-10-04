@@ -4,6 +4,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.atomic.LongAdder;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 4
+ * Accepted and rejected log counters used for monitoring and benchmarks.
+ */
 @Component
 public class IngestionStats {
     private final LongAdder accepted = new LongAdder();

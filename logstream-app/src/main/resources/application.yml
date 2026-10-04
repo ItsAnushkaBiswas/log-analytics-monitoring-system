@@ -1,3 +1,4 @@
+# Member 1 (Log Ingestion & Lucene Core) - Week 1: ingestion settings; batch size, RAM buffer and intervals tuned in Week 4
 spring:
   application:
     name: logstream

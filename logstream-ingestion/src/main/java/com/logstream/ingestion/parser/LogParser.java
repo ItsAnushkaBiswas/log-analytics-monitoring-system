@@ -21,6 +21,10 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 2
+ * Parses and validates incoming logs, including plain text log lines.
+ */
 @Component
 public class LogParser {
     static final int MAX_MESSAGE_LENGTH = 32_768;

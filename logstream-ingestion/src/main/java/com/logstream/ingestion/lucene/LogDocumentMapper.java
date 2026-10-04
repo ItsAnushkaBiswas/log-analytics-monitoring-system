@@ -16,6 +16,10 @@ import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 2
+ * Converts a log record to a Lucene document and back, defining how each field is indexed.
+ */
 public final class LogDocumentMapper {
     public static final String ID = "id";
     public static final String TIMESTAMP = "timestamp";

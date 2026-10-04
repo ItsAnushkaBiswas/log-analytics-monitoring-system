@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 1
+ * Starts and stops the gRPC ingestion server on port 9090.
+ */
 @Component
 public class GrpcServerLifecycle implements SmartLifecycle {
     private static final Logger log = LoggerFactory.getLogger(GrpcServerLifecycle.class);

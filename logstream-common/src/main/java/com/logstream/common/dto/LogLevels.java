@@ -3,6 +3,10 @@ package com.logstream.common.dto;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 1
+ * Standard level names and mapping of common spellings such as WARNING or CRITICAL.
+ */
 public final class LogLevels {
     public static final String TRACE = "TRACE";
     public static final String DEBUG = "DEBUG";

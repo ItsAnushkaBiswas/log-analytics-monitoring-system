@@ -20,6 +20,10 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Member 1 (Log Ingestion & Lucene Core) - Week 2
+ * Write path: parse, index into Lucene, then notify listeners.
+ */
 @Service
 public class IngestionService {
     private static final Logger log = LoggerFactory.getLogger(IngestionService.class);
