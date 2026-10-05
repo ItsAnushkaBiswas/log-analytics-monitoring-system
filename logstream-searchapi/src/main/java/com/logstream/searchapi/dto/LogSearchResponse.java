@@ -8,15 +8,23 @@ public class LogSearchResponse {
     private long total;
     private int page;
     private int size;
+    private long tookMs;
 
     public LogSearchResponse() {
     }
 
-    public LogSearchResponse(List<LogResponse> results, long total, int page, int size) {
+    public LogSearchResponse(
+            List<LogResponse> results,
+            long total,
+            int page,
+            int size,
+            long tookMs) {
+
         this.results = results;
         this.total = total;
         this.page = page;
         this.size = size;
+        this.tookMs = tookMs;
     }
 
     public List<LogResponse> getResults() {
@@ -49,5 +57,13 @@ public class LogSearchResponse {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public long getTookMs() {
+        return tookMs;
+    }
+
+    public void setTookMs(long tookMs) {
+        this.tookMs = tookMs;
     }
 }
