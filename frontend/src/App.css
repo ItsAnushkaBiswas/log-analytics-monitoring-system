@@ -197,3 +197,40 @@ th {
     grid-template-columns: 1fr;
   }
 }
+.search-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #303644;
+  border-radius: 7px;
+  background: #181c25;
+  color: #e6e9ef;
+  outline: none;
+}
+
+.filter-panel {
+  display: flex;
+  gap: 12px;
+}
+
+.filter-panel select {
+  padding: 12px 14px;
+  border: 1px solid #303644;
+  border-radius: 7px;
+  background: #181c25;
+  color: #e6e9ef;
+}
+
+.filter-panel button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  background: #5b5cf0;
+  color: white;
+}
