@@ -32,9 +32,10 @@ The following performance aspects will be measured:
 
 ## 4. Performance Evidence
 
-## 4. Performance Evidence
-
 | Benchmark | Result | Status |
 |---|---:|---|
 | Alert evaluation time | 31.926 ns per evaluation | Passed |
 | Simulated webhook call time | 7,519.813 ns per call | Passed |
+| Lucene count() average time | 28,621 ns per operation | Passed |
+| Lucene countBy() average time | 154,648 ns per operation | Passed |
+| Lucene histogram() average time | 1,067,029 ns per operation | Passed |
