@@ -4,7 +4,6 @@ import com.logstream.common.search.TimeBucket;
 import java.time.Instant;
 import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.NumericDocValuesField;
-import java.time.Instant;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.util.BytesRef;
 import com.logstream.ingestion.TestIndexes;
