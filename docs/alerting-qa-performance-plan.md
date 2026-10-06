@@ -32,6 +32,9 @@ The following performance aspects will be measured:
 
 ## 4. Performance Evidence
 
+## 4. Performance Evidence
+
 | Benchmark | Result | Status |
 |---|---:|---|
 | Alert evaluation time | 31.926 ns per evaluation | Passed |
+| Simulated webhook call time | 7,519.813 ns per call | Passed |
