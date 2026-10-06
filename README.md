@@ -41,16 +41,18 @@ log-analytics-monitoring-system/
 │
 ├── logstream-common/                # ⚠️ shared contracts — changes need review from all
 │   ├── pom.xml
+│   ├── src/main/proto/log_message.proto  # shared .proto schema (M1 owns edits, all consume)
 │   └── src/main/java/com/logstream/common/
-│       ├── proto/LogMessage.proto   # shared .proto schema (M1 owns edits, all consume)
-│       └── dto/                     # shared DTOs used across modules (e.g. LogRecord)
+│       ├── dto/                     # shared DTOs used across modules (e.g. LogRecord)
+│       └── search/                  # LogSearchService interface + query/result types
 │
 ├── logstream-ingestion/             # Member 1 — Ingestion & Lucene Core
 │   ├── pom.xml
 │   └── src/main/java/com/logstream/ingestion/
 │       ├── grpc/                    # gRPC server, generated stubs
 │       ├── parser/                  # log parsing logic
-│       ├── lucene/                  # index writer, document builder
+│       ├── lucene/                  # index writer, document builder, search implementation
+│       ├── service/                 # parse → index → notify pipeline
 │       └── config/
 │
 ├── logstream-searchapi/             # Member 2 — Search API & WebSocket
@@ -83,4 +85,24 @@ log-analytics-monitoring-system/
     │   ├── api/                     # REST/WebSocket client
     │   └── charts/                  # ECharts views
     └── public/
+```
+
+## Getting Started
+
+Prerequisites: **JDK 21** (`JAVA_HOME` must point to it) and Git. Maven is not needed — use the wrapper.
+
+```bash
+./mvnw clean install
+java -jar logstream-app/target/logstream-app-1.0-SNAPSHOT.jar
+```
+
+On Windows use `mvnw.cmd` instead of `./mvnw`.
+
+The app listens for logs over gRPC on port **9090** and stores the index in `./index-data`
+(override with `LOGSTREAM_GRPC_PORT` / `LOGSTREAM_INDEX_PATH`).
+
+Send a test log with Postman (New → gRPC → `localhost:9090`, "Use server reflection") or grpcurl:
+
+```bash
+grpcurl -plaintext -d '{"level":"ERROR","service":"payment","message":"card declined"}' localhost:9090 logstream.v1.LogIngestionService/Ingest
 ```

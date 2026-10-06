@@ -1,0 +1,14 @@
+# Member 1 (Log Ingestion & Lucene Core) - Week 1: ingestion settings; batch size, RAM buffer and intervals tuned in Week 4
+spring:
+  application:
+    name: logstream
+
+logstream:
+  ingestion:
+    grpc-port: ${LOGSTREAM_GRPC_PORT:9090}
+    index-path: ${LOGSTREAM_INDEX_PATH:index-data}
+    max-batch-size: 1000
+    ram-buffer-mb: 64
+    refresh-interval: 1s
+    commit-interval: 5s
+    max-inbound-message-mb: 16
