@@ -32,10 +32,16 @@ The following performance aspects will be measured:
 
 ## 4. Performance Evidence
 
-| Benchmark | Result | Status |
-|---|---:|---|
-| Alert evaluation time | 31.926 ns per evaluation | Passed |
-| Simulated webhook call time | 7,519.813 ns per call | Passed |
-| Lucene count() average time | 28,621 ns per operation | Passed |
-| Lucene countBy() average time | 154,648 ns per operation | Passed |
-| Lucene histogram() average time | 1,067,029 ns per operation | Passed |
+| Benchmark                       | Result | Status |
+|---------------------------------|---:|--------|
+| Alert evaluation time           | 31.926 ns per evaluation | Passed |
+| Simulated webhook call time     | 7,519.813 ns per call | Passed |
+| Lucene count() average time | 51,146 ns per operation | Passed |
+| Lucene countBy() average time | 214,934 ns per operation | Passed |
+| Lucene histogram() average time | 1,140,418 ns per operation | Passed |
+| Ingestion throughput            | 88,513 logs/sec | Passed |
+| Ingestion time                  | 11.30 sec for 1,000,000 logs | Passed |
+| Refresh time                    | 1,477 ms | Passed |
+| 1M-log keyword search | 17.3 ms per operation | Passed |
+| Filter search                   | 1.9 ms per operation | Passed | 
+| Ingestion benchmark index size  | 1,080,000 docs | Passed | 
