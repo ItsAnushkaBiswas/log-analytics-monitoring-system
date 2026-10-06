@@ -37,4 +37,7 @@ public class AlertScheduler {
                         + " | Triggered: " + triggered
         );
     }
+    public String getLastWebhookMessage() {
+        return webhook.getLastMessage();
+    }
 }

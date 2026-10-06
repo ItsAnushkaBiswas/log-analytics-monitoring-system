@@ -2,6 +2,7 @@ package com.logstream.alerting.scheduler;
 
 import com.logstream.alerting.rule.AlertRule;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class AlertSchedulerTest {
@@ -11,5 +12,10 @@ public class AlertSchedulerTest {
         AlertScheduler scheduler = new AlertScheduler(rule);
 
         scheduler.runAlerts();
+
+        assertEquals(
+                "Alert triggered: Error Alert",
+                scheduler.getLastWebhookMessage()
+        );
     }
 }
