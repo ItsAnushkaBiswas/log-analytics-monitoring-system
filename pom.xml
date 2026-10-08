@@ -21,6 +21,7 @@
     <modules>
         <module>logstream-common</module>
         <module>logstream-ingestion</module>
+        <module>logstream-searchapi</module>
         <module>logstream-app</module>
     </modules>
 
@@ -33,6 +34,17 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- Spring Boot dependency versions -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- gRPC BOM -->
             <dependency>
                 <groupId>io.grpc</groupId>
                 <artifactId>grpc-bom</artifactId>
@@ -40,6 +52,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+
+            <!-- Lucene versions -->
             <dependency>
                 <groupId>com.google.protobuf</groupId>
                 <artifactId>protobuf-bom</artifactId>
@@ -52,16 +72,20 @@
                 <artifactId>lucene-core</artifactId>
                 <version>${lucene.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-queryparser</artifactId>
                 <version>${lucene.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analysis-common</artifactId>
                 <version>${lucene.version}</version>
             </dependency>
+
+            <!-- Shared module version -->
             <dependency>
                 <groupId>com.logstream</groupId>
                 <artifactId>logstream-common</artifactId>
