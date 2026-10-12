@@ -1,0 +1,14 @@
+GRPC localhost:9090/logstream.v1.LogIngestionService/Ingest
+
+{
+  "timestamp_millis": 1760000000000,
+  "level": "INFO",
+  "service": "test-service",
+  "host": "localhost",
+  "message": "Live Tail test log",
+  "attributes": {
+    "environment": "test"
+  },
+  "trace_id": "test-trace-001",
+  "raw": "INFO test-service Live Tail test log"
+}
