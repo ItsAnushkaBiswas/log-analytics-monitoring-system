@@ -20,6 +20,7 @@
         <module>logstream-ingestion</module>
         <module>logstream-searchapi</module>
         <module>logstream-app</module>
+        <module>logstream-alerting</module>
     </modules>
 
     <properties>
@@ -123,12 +124,5 @@
         </dependencies>
 
     </dependencyManagement>
-
-    <modules>
-        <module>logstream-common</module>
-        <module>logstream-ingestion</module>
-        <module>logstream-app</module>
-        <module>logstream-alerting</module>
-    </modules>
 
 </project>
