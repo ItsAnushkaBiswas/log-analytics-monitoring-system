@@ -16,7 +16,7 @@ application-local.properties
 *.pid
 
 ### === Lucene index data (generated at runtime, don't commit) === ###
-/logstream-ingestion/index-data/
+**/index-data/
 *.cfs
 *.cfe
 *.si
