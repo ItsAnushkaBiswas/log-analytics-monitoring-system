@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -11,7 +12,6 @@
     </parent>
 
     <artifactId>logstream-app</artifactId>
-    <!-- Member 1 (Log Ingestion & Lucene Core) - Week 1: assembles the backend modules into one runnable jar -->
     <name>LogStream application</name>
     <description>Assembles all backend modules into one runnable Spring Boot jar.</description>
 
@@ -19,6 +19,17 @@
         <dependency>
             <groupId>com.logstream</groupId>
             <artifactId>logstream-ingestion</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.logstream</groupId>
+            <artifactId>logstream-searchapi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -36,4 +47,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
