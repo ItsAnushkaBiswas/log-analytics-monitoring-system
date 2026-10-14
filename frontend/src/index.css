@@ -170,7 +170,7 @@ a {
 *::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 255, 0.38);
 }
-
+ /* ================================================================ */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
