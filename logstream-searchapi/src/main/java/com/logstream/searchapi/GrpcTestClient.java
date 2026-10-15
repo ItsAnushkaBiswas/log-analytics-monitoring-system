@@ -25,7 +25,7 @@ public class GrpcTestClient {
                     .setLevel(LogLevel.INFO)
                     .setService("test-service")
                     .setHost("localhost")
-                    .setMessage("Live Tail test log")
+                    .setMessage("Member2 integration test 1014")
                     .putAttributes("environment", "test")
                     .setTraceId("test-trace-001")
                     .setRaw("INFO test-service Live Tail test log")
