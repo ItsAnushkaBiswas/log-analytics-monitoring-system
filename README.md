@@ -21,7 +21,7 @@ The system provides the following major capabilities:
 ## Technology Stack
 
 ### Backend
-- Java
+- Java 25 (LTS)
 - Spring Boot
 - gRPC
 - Apache Lucene

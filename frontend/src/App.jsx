@@ -37,6 +37,7 @@ const SERVICE_HEALTH = [
   { name: "Auth Service", uptime: "99.95%" },
   { name: "User Service", uptime: "99.97%" },
   { name: "Payment Service", uptime: "99.91%" },
+  
   { name: "Database", uptime: "99.99%" },
 ];
 

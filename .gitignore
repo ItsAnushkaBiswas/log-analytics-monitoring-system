@@ -63,3 +63,4 @@ desktop.ini
 *.tmp
 *.bak
 out/
+logstream-searchapi/index-data/
