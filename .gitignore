@@ -64,3 +64,5 @@ desktop.ini
 *.bak
 out/
 logstream-searchapi/index-data/
+
+logstream-common/effective-pom-common.xml
