@@ -1,3 +1,4 @@
+import { connectLiveTail } from "./services/websocket";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import "./App.css";
@@ -1106,6 +1107,10 @@ function LiveTailPreview({ onOpen }) {
    ================================================================ */
 
 function App() {
+const [alertLogs, setAlertLogs] = useState([]);
+const [alertsLoading, setAlertsLoading] = useState(false);
+const [liveLogs, setLiveLogs] = useState([]);
+const [wsStatus, setWsStatus] = useState("disconnected");
   const [search, setSearch] = useState("");
   const [level, setLevel] = useState("ALL");
   const [service, setService] = useState("ALL");
@@ -1142,7 +1147,6 @@ function App() {
   /* --------------------------------------------------------------
      Ctrl + K
      -------------------------------------------------------------- */
-
   useEffect(() => {
     function handleKeyboard(event) {
       if (
@@ -1154,18 +1158,77 @@ function App() {
       }
     }
 
-    window.addEventListener(
-      "keydown",
-      handleKeyboard
-    );
+    window.addEventListener("keydown", handleKeyboard);
 
-    return () =>
-      window.removeEventListener(
-        "keydown",
-        handleKeyboard
-      );
+    return () => {
+      window.removeEventListener("keydown", handleKeyboard);
+    };
   }, []);
+/*========ALert Page =====================*/
+useEffect(() => {
+  if (activePage !== "Alerts") return;
 
+  let cancelled = false;
+
+  async function loadAlerts() {
+    setAlertsLoading(true);
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/logs/search?levels=ERROR&size=50`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      const logs = Array.isArray(result)
+        ? result
+       : result.results ?? result.data ?? result.logs ?? result.content ?? [];
+
+      if (!cancelled) setAlertLogs(logs);
+    } catch (error) {
+      console.error("Failed to load alerts:", error);
+      if (!cancelled) setAlertLogs([]);
+    } finally {
+      if (!cancelled) setAlertsLoading(false);
+    }
+  }
+
+  loadAlerts();
+
+  return () => {
+    cancelled = true;
+  };
+}, [activePage]);
+
+  /* --------------------------------------------------------------
+     LIVE TAIL WEBSOCKET
+     -------------------------------------------------------------- */
+
+    
+  useEffect(() => {
+    if (activePage !== "Live Tail") {
+      return;
+    }
+
+    const disconnect = connectLiveTail({
+      onLog: (log) => {
+        setLiveLogs((previous) =>
+          [log, ...previous].slice(0, 200)
+        );
+      },
+
+      onStatus: setWsStatus,
+
+      onError: (error) => {
+        console.error("Live Tail error:", error);
+      },
+    });
+
+    return disconnect;
+  }, [activePage]);
   /* --------------------------------------------------------------
      BACKEND REQUEST
      -------------------------------------------------------------- */
@@ -1372,6 +1435,7 @@ useEffect(() => {
         .filter(Boolean)
     ).size;
 
+ 
   /* --------------------------------------------------------------
      RENDER
      -------------------------------------------------------------- */
@@ -1386,127 +1450,186 @@ useEffect(() => {
       <main className="main-content">
         <Topbar
           title={activePage}
-          backendConnected={
-            backendConnected
-          }
+          backendConnected={backendConnected}
         />
 
         {error && (
           <div className="backend-error glass-panel">
-            <strong>
-              Backend connection error
-            </strong>
-
+            <strong>Backend connection error</strong>
             <span>{error}</span>
-
-            <button
-              type="button"
-              onClick={fetchDashboardData}
-            >
+            <button type="button" onClick={fetchDashboardData}>
               Retry
             </button>
           </div>
         )}
+{activePage === "Live Tail" ? (
+  <section className="glass-panel live-panel">
+    <PanelHeader label="Real-time" title="Live Tail">
+      <span className="pill pill-green">
+        <i className="status-dot pulse" />
+        {wsStatus}
+      </span>
+    </PanelHeader>
 
-        <section
-          className="metrics-grid"
-          aria-label="Key metrics"
-        >
-          <MetricCard
-            icon="logs"
-            label="TOTAL LOGS"
-            value={Number(
-              totalLogs
-            ).toLocaleString()}
-            trend="Live"
-            trendUp
-            tone="blue"
-          />
+    <div
+      className="terminal"
+      role="log"
+      aria-live="polite"
+      aria-label="Live incoming logs"
+    >
+      {liveLogs.length === 0 ? (
+        <p>Waiting for incoming logs...</p>
+      ) : (
+        liveLogs.map((log, index) => (
+          <div
+            className="terminal-row"
+            key={
+              log.id ||
+              `${log.timestamp || log.time || "log"}-${index}`
+            }
+          >
+            <div className="terminal-meta">
+              <time>{log.timestamp || log.time || ""}</time>
 
-          <MetricCard
-            icon="errorCircle"
-            label="ERRORS"
-            value={Number(
-              errors
-            ).toLocaleString()}
-            trend="Live"
-            trendUp={false}
-            tone="red"
-          />
+              <LevelBadge level={log.level || "INFO"} />
 
-          <MetricCard
-            icon="warning"
-            label="WARNINGS"
-            value={Number(
-              warnings
-            ).toLocaleString()}
-            trend="Live"
-            trendUp={false}
-            tone="amber"
-          />
+              <span className="terminal-service">
+                {log.service || "unknown"}
+              </span>
+            </div>
 
-          <MetricCard
-            icon="checkCircle"
-            label="ACTIVE SERVICES"
-            value={Number(
-              activeServices
-            ).toLocaleString()}
-            trend="Live"
-            trendUp
-            tone="green"
-          />
-        </section>
-
-        <FilterToolbar
-          search={search}
-          setSearch={setSearch}
-          level={level}
-          setLevel={setLevel}
-          service={service}
-          setService={setService}
-          services={services}
-          timeRange={timeRange}
-          setTimeRange={setTimeRange}
-          onSearch={
-            fetchDashboardData
-          }
-          onClear={clearFilters}
-          searchRef={searchRef}
-          loading={loading}
-        />
-
-        <section className="analytics-grid">
-          <LogActivityChart
-            histogram={histogram}
-          />
-
-          <LevelDistribution
-            countByData={countByData}
-            total={totalLogs}
-          />
-        </section>
-
-        <section className="lower-grid">
-          <LogTable
-            logs={logs}
-            loading={loading}
-          />
-
-          <div className="right-column">
-            <ServiceHealth />
-
-            <LiveTailPreview
-              onOpen={() =>
-                setActivePage(
-                  "Live Tail"
-                )
-              }
-            />
+            <p>{log.message || JSON.stringify(log)}</p>
           </div>
-        </section>
+        ))
+      )}
+    </div>
+  </section>
+) : activePage === "Alerts" ? (
+  <section className="glass-panel live-panel">
+    <PanelHeader label="Monitoring" title="Alerts">
+      <span className="pill pill-red">
+        {alertLogs.length} errors
+      </span>
+    </PanelHeader>
+
+    {alertsLoading ? (
+      <p>Loading alerts...</p>
+    ) : alertLogs.length === 0 ? (
+      <div className="terminal">
+        <p>No ERROR logs found.</p>
+      </div>
+    ) : (
+      <div className="terminal" role="log" aria-label="Error alerts">
+        {alertLogs.map((log, index) => (
+          <div
+            className="terminal-row"
+            key={
+              log.id ||
+              `${log.timestamp || log.time || "alert"}-${index}`
+            }
+          >
+            <div className="terminal-meta">
+              <time>{log.timestamp || log.time || ""}</time>
+
+              <LevelBadge level={log.level || "ERROR"} />
+
+              <span className="terminal-service">
+                {log.service || "unknown"}
+              </span>
+            </div>
+
+            <p>{log.message || JSON.stringify(log)}</p>
+          </div>
+        ))}
+      </div>
+    )}
+  </section>
+) : (
+  <>
+    <section
+      className="metrics-grid"
+      aria-label="Key metrics"
+    >
+      <MetricCard
+        icon="logs"
+        label="TOTAL LOGS"
+        value={Number(totalLogs).toLocaleString()}
+        trend="Live"
+        trendUp
+        tone="blue"
+      />
+
+      <MetricCard
+        icon="errorCircle"
+        label="ERRORS"
+        value={Number(errors).toLocaleString()}
+        trend="Live"
+        trendUp={false}
+        tone="red"
+      />
+
+      <MetricCard
+        icon="warning"
+        label="WARNINGS"
+        value={Number(warnings).toLocaleString()}
+        trend="Live"
+        trendUp={false}
+        tone="amber"
+      />
+
+      <MetricCard
+        icon="checkCircle"
+        label="ACTIVE SERVICES"
+        value={Number(activeServices).toLocaleString()}
+        trend="Live"
+        trendUp
+        tone="green"
+      />
+    </section>
+
+    <FilterToolbar
+      search={search}
+      setSearch={setSearch}
+      level={level}
+      setLevel={setLevel}
+      service={service}
+      setService={setService}
+      services={services}
+      timeRange={timeRange}
+      setTimeRange={setTimeRange}
+      onSearch={fetchDashboardData}
+      onClear={clearFilters}
+      searchRef={searchRef}
+      loading={loading}
+    />
+
+    <section className="analytics-grid">
+      <LogActivityChart histogram={histogram} />
+
+      <LevelDistribution
+        countByData={countByData}
+        total={totalLogs}
+      />
+    </section>
+
+    <section className="lower-grid">
+      <LogTable
+        logs={logs}
+        loading={loading}
+      />
+
+      <div className="right-column">
+        <ServiceHealth />
+
+        <LiveTailPreview
+          onOpen={() => setActivePage("Live Tail")}
+        />
+      </div>
+    </section>
+  </>
+)}
       </main>
     </div>
   );
 }
-
 export default App;
