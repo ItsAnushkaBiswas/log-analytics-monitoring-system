@@ -1,14 +1,32 @@
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "http://localhost:8080";
+
+async function fetchJson(url) {
+  let response;
+
+  try {
+    response = await fetch(url);
+  } catch (error) {
+    throw new Error(
+        `Backend connection failed. Check that Java backend is running at ${API_BASE_URL}.`
+    );
+  }
+
+  if (!response.ok) {
+    throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
+}
 
 export async function searchLogs({
-  text = "",
-  levels = "",
-  services = "",
-  from = "",
-  to = "",
-  page = 0,
-  size = 50,
-} = {}) {
+                                   text = "",
+                                   levels = "",
+                                   services = "",
+                                   from = "",
+                                   to = "",
+                                   page = 0,
+                                   size = 50,
+                                 } = {}) {
   const params = new URLSearchParams();
 
   if (text) params.set("text", text);
@@ -17,52 +35,28 @@ export async function searchLogs({
   if (from) params.set("from", from);
   if (to) params.set("to", to);
 
-  params.set("page", page);
-  params.set("size", size);
+  params.set("page", String(page));
+  params.set("size", String(size));
 
-  const response = await fetch(
-    `${API_BASE_URL}/api/logs/search?${params.toString()}`
+  return fetchJson(
+      `${API_BASE_URL}/api/logs/search?${params.toString()}`
   );
-
-  if (!response.ok) {
-    throw new Error(`Search API failed: ${response.status}`);
-  }
-
-  return response.json();
 }
 
 export async function getLogCount() {
-  const response = await fetch(
-    `${API_BASE_URL}/api/logs/aggregation/count`
+  return fetchJson(
+      `${API_BASE_URL}/api/logs/aggregation/count`
   );
-
-  if (!response.ok) {
-    throw new Error(`Count API failed: ${response.status}`);
-  }
-
-  return response.json();
 }
 
 export async function getLogHistogram(interval = "PT1M") {
-  const response = await fetch(
-    `${API_BASE_URL}/api/logs/aggregation/histogram?interval=${encodeURIComponent(interval)}`
+  return fetchJson(
+      `${API_BASE_URL}/api/logs/aggregation/histogram?interval=${encodeURIComponent(interval)}`
   );
-
-  if (!response.ok) {
-    throw new Error(`Histogram API failed: ${response.status}`);
-  }
-
-  return response.json();
 }
 
 export async function getLogCountBy(field = "LEVEL") {
-  const response = await fetch(
-    `${API_BASE_URL}/api/logs/aggregation/count-by?field=${field}`
+  return fetchJson(
+      `${API_BASE_URL}/api/logs/aggregation/count-by?field=${encodeURIComponent(field)}`
   );
-
-  if (!response.ok) {
-    throw new Error(`Count-by API failed: ${response.status}`);
-  }
-
-  return response.json();
 }
