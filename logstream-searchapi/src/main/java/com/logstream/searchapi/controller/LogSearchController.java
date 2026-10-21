@@ -25,6 +25,7 @@ public class LogSearchController {
         this.logSearchService = logSearchService;
     }
 
+
     @GetMapping("/search")
     public LogSearchResponse searchLogs(
             @RequestParam(name = "text", required = false) String text,
@@ -34,6 +35,27 @@ public class LogSearchController {
             @RequestParam(name = "to", required = false) Instant to,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "50") int size) {
+
+        if (page < 0) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST,
+                    "Page must be non-negative"
+            );
+        }
+
+        if (size <= 0 || size > 500) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST,
+                    "Size must be between 1 and 500"
+            );
+        }
+
+        if (from != null && to != null && !from.isBefore(to)) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST,
+                    "'from' must be before 'to'"
+            );
+        }
 
         int offset = page * size;
 
@@ -49,4 +71,5 @@ public class LogSearchController {
 
         return logSearchService.searchLogs(query);
     }
+
 }

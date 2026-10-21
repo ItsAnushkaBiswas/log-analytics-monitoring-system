@@ -23,6 +23,8 @@
         <module>logstream-ingestion</module>
         <module>logstream-searchapi</module>
         <module>logstream-app</module>
+        <module>logstream-alerting</module>
+
     </modules>
 
     <properties>
@@ -39,7 +41,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>3.5.6</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

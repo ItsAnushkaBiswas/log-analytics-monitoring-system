@@ -27,9 +27,7 @@ class LogAggregationControllerTest {
 
         when(searchService.count(any(LogQuery.class))).thenReturn(6L);
 
-        long result = controller.count(
-                null, null, null, null, null
-        );
+        long result = (Long) controller.count().get("count");
 
         assertEquals(6L, result);
         verify(searchService).count(any(LogQuery.class));
@@ -47,11 +45,9 @@ class LogAggregationControllerTest {
                 eq(LogField.LEVEL), any(LogQuery.class)
         )).thenReturn(Map.of("INFO", 6L));
 
-        Map<String, Long> result = controller.countBy(
-                LogField.LEVEL, null, null, null, null, null
-        );
+        Map<String, Object> result = controller.countBy("LEVEL");
 
-        assertEquals(Map.of("INFO", 6L), result);
+        assertEquals(Map.of("counts", Map.of("INFO", 6L)), result);
         verify(searchService).countBy(
                 eq(LogField.LEVEL), any(LogQuery.class)
         );
@@ -71,11 +67,9 @@ class LogAggregationControllerTest {
                 any(LogQuery.class), eq(Duration.ofMinutes(1))
         )).thenReturn(expected);
 
-        List<TimeBucket> result = controller.histogram(
-                null, null, null, null, null, "PT1M"
-        );
-
-        assertEquals(expected, result);
+        Map<String, Object> result = controller.histogram("PT1M");
+        assertEquals("PT1M", result.get("interval"));
+        assertEquals(expected, result.get("buckets"));
         verify(searchService).histogram(
                 any(LogQuery.class), eq(Duration.ofMinutes(1))
         );
