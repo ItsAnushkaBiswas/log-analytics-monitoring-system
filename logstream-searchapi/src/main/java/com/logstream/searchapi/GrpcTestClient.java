@@ -22,10 +22,10 @@ public class GrpcTestClient {
 
             LogMessage log = LogMessage.newBuilder()
                     .setTimestampMillis(System.currentTimeMillis())
-                    .setLevel(LogLevel.INFO)
+                    .setLevel(LogLevel.ERROR)
                     .setService("test-service")
                     .setHost("localhost")
-                    .setMessage("Member2 integration test 1014")
+                    .setMessage("Alert testing error log 2026")
                     .putAttributes("environment", "test")
                     .setTraceId("test-trace-001")
                     .setRaw("INFO test-service Live Tail test log")

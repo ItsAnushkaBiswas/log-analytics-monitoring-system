@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "http://localhost:5174"
+})
 @RestController
 @RequestMapping("/api/logs")
 public class LogSearchController {
