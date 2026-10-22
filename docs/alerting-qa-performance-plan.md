@@ -45,3 +45,27 @@ The following performance aspects will be measured:
 | 1M-log keyword search | 17.3 ms per operation | Passed |
 | Filter search                   | 1.9 ms per operation | Passed | 
 | Ingestion benchmark index size  | 1,080,000 docs | Passed | 
+
+## 5. End-to-End Regression Testing
+
+### Objective
+Verify that the integrated Log Analytics Monitoring System works correctly across ingestion, search, aggregation, alerting, and WebSocket communication.
+
+### Test Coverage
+- **Ingestion:** Verify log ingestion through the gRPC service.
+- **Search:** Verify retrieval and filtering of logs by level.
+- **Aggregation:** Verify total count, count by level, and histogram results.
+- **Alerting:** Verify that alerts trigger above the configured threshold and do not trigger below it.
+- **Webhook:** Verify that a triggered alert invokes the simulated webhook.
+- **Live Tail:** Verify that the WebSocket endpoint accepts a client connection.
+
+### Current Status
+The full Maven reactor build and automated test suite completed successfully across the project modules. Regression checks cover gRPC log ingestion, search and filtering, aggregation results, alert threshold evaluation, scheduler and simulated webhook behavior, and Live Tail functionality. Search and aggregation API responses, invalid histogram interval handling, and the WebSocket connection were also manually verified. However, a single automated end-to-end test validating the complete ingestion-to-alert workflow has not yet been confirmed.
+
+### Automated Ingestion-to-Alert Regression Test
+
+Added and successfully executed `IngestionToAlertIntegrationTest`. The test ingests two ERROR logs through the ingestion service, verifies their acceptance and Lucene indexing, confirms the matching log count, evaluates the alert threshold, and asserts that the simulated webhook receives the expected notification.
+
+**Result:** 1 test passed, 0 failed.
+
+**Scope note:** The test validates the ingestion-to-alert logic using the real Lucene search/count service.
