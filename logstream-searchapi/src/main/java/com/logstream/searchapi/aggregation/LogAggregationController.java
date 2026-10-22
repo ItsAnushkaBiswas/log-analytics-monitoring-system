@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -42,11 +44,27 @@ public class LogAggregationController {
             @RequestParam(name = "interval", defaultValue = "PT1M")
             String interval) {
 
-        LogQuery query = LogQuery.all();
+        Duration duration;
 
-        List<TimeBucket> buckets = aggregationService.histogram(
-                query, Duration.parse(interval)
-        );
+        try {
+            duration = Duration.parse(interval);
+        } catch (java.time.format.DateTimeParseException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid interval. Use a duration such as PT1M or PT5M."
+            );
+        }
+
+        if (duration.isZero() || duration.isNegative()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Interval must be positive."
+            );
+        }
+
+        LogQuery query = LogQuery.all();
+        List<TimeBucket> buckets =
+                aggregationService.histogram(query, duration);
 
         return Map.of(
                 "buckets", buckets,
