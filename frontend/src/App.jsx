@@ -13,7 +13,7 @@ import "./App.css";
    Count By   : GET /api/logs/aggregation/count-by
    ================================================================ */
 
-const API_BASE = "http://localhost:8081";
+const API_BASE = "http://localhost:8080";
 
 const NAV_ITEMS = [
   { label: "Dashboard", icon: "dashboard" },

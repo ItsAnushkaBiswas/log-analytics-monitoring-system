@@ -1,5 +1,5 @@
 
-const WS_URL = "ws://localhost:8081/ws/logs";
+const WS_URL = "ws://localhost:8080/ws/logs";
 
 export function connectLiveTail({ onLog, onStatus, onError } = {}) {
   let socket;
