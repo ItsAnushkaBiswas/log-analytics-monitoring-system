@@ -16,15 +16,14 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 @RestController
 @CrossOrigin(origins = {
         "http://localhost:5173",
         "http://localhost:5174"
 })
-import java.util.Set;
 
-@RestController
+
 @RequestMapping("/api/logs/aggregation")
 public class LogAggregationController {
 
@@ -90,7 +89,7 @@ public class LogAggregationController {
 
         return Map.of("counts", counts);
     }
-}
+
     public long count(
             @RequestParam(name = "text", required = false) String text,
             @RequestParam(name = "levels", required = false) Set<String> levels,
