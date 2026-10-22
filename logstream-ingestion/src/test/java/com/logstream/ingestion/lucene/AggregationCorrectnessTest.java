@@ -12,6 +12,7 @@ import com.logstream.common.search.LogQuery;
 import com.logstream.ingestion.config.IngestionProperties;
 import org.apache.lucene.document.Document;
 import org.junit.jupiter.api.Test;
+import com.logstream.ingestion.lucene.LogDocumentMapper;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

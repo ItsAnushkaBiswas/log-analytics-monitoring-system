@@ -6,11 +6,18 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.16</version>
+        <relativePath/>
+    </parent>
+
     <groupId>com.logstream</groupId>
     <artifactId>log-analytics-monitoring-system</artifactId>
+    <!-- Member 1 (Log Ingestion & Lucene Core) - Week 1: parent build with shared versions for gRPC, Protobuf and Lucene -->
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
     <name>Log Analytics Monitoring System</name>
     <description>Monolithic Java-based Log Analytics and Monitoring System</description>
 
@@ -20,24 +27,33 @@
         <module>logstream-searchapi</module>
         <module>logstream-app</module>
         <module>logstream-alerting</module>
+
     </modules>
 
     <properties>
         <java.version>21</java.version>
-        <maven.compiler.release>21</maven.compiler.release>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot.version>3.5.6</spring-boot.version>
         <grpc.version>1.66.0</grpc.version>
-        <lucene.version>9.12.1</lucene.version>
         <protobuf.version>4.27.2</protobuf.version>
+        <lucene.version>9.12.1</lucene.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- Spring Boot dependency versions -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
+                <version>3.5.6</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- gRPC BOM -->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-bom</artifactId>
+                <version>${grpc.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -49,17 +65,12 @@
             </dependency>
 
             <dependency>
-                <groupId>io.grpc</groupId>
-                <artifactId>grpc-netty-shaded</artifactId>
-                <version>${grpc.version}</version>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-bom</artifactId>
+                <version>${protobuf.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
-
-            <dependency>
-                <groupId>io.grpc</groupId>
-                <artifactId>grpc-services</artifactId>
-                <version>${grpc.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>io.grpc</groupId>
                 <artifactId>grpc-stub</artifactId>
@@ -93,9 +104,8 @@
             <dependency>
                 <groupId>com.logstream</groupId>
                 <artifactId>logstream-common</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.logstream</groupId>
                 <artifactId>logstream-ingestion</artifactId>
@@ -104,4 +114,19 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <benchmark>${benchmark}</benchmark>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

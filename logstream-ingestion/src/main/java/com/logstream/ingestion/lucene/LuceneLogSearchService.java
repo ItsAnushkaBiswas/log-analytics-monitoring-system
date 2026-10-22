@@ -29,6 +29,10 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.document.LongPoint;
 import org.springframework.stereotype.Service;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.MatchNoDocsQuery;
+import org.apache.lucene.search.Query;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -158,19 +162,28 @@ public class LuceneLogSearchService implements LogSearchService {
         return any ? b.build() : new MatchAllDocsQuery();
     }
 
+
     private Query parseText(String text) {
-        QueryParser parser = new QueryParser(LogDocumentMapper.MESSAGE, index.analyzer());
+        QueryParser parser = new QueryParser(
+                LogDocumentMapper.MESSAGE,
+                index.analyzer()
+        );
         parser.setDefaultOperator(QueryParser.Operator.AND);
+
+
         try {
-            return parser.parse(text);
+            return parser.parse(text.replaceAll("\\s+", " "));
         } catch (ParseException e) {
             try {
                 return parser.parse(QueryParser.escape(text));
-            } catch (ParseException again) {
-                throw new IllegalArgumentException("Invalid search text: " + text, again);
+            } catch (ParseException ignored) {
+                return new MatchNoDocsQuery();
             }
         }
+
+
     }
+
 
     private static boolean addAnyOf(BooleanQuery.Builder b, String field, Set<String> values) {
         if (values.isEmpty()) {

@@ -22,6 +22,10 @@ public class GrpcTestClient {
 
             LogMessage log = LogMessage.newBuilder()
                     .setTimestampMillis(System.currentTimeMillis())
+                    .setLevel(LogLevel.ERROR)
+                    .setService("test-service")
+                    .setHost("localhost")
+                    .setMessage("Alert testing error log 2026")
                     .setLevel(LogLevel.INFO)
                     .setService("test-service")
                     .setHost("localhost")

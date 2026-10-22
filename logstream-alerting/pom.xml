@@ -34,6 +34,15 @@
             <scope>test</scope>
         </dependency>
 
+
+        <!-- Shared interfaces and search models -->
+        <dependency>
+            <groupId>com.logstream</groupId>
+            <artifactId>logstream-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
     </dependencies>
 
 </project>
