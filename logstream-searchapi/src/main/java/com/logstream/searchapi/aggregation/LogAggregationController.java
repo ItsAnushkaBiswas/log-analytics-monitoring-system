@@ -22,6 +22,9 @@ import java.util.Map;
         "http://localhost:5173",
         "http://localhost:5174"
 })
+import java.util.Set;
+
+@RestController
 @RequestMapping("/api/logs/aggregation")
 public class LogAggregationController {
 
@@ -86,5 +89,65 @@ public class LogAggregationController {
         );
 
         return Map.of("counts", counts);
+    }
+}
+    public long count(
+            @RequestParam(name = "text", required = false) String text,
+            @RequestParam(name = "levels", required = false) Set<String> levels,
+            @RequestParam(name = "services", required = false) Set<String> services,
+            @RequestParam(name = "from", required = false) Instant from,
+            @RequestParam(name = "to", required = false) Instant to) {
+
+        LogQuery query = createQuery(text, levels, services, from, to);
+
+        return aggregationService.count(query);
+    }
+
+    @GetMapping("/histogram")
+    public List<TimeBucket> histogram(
+            @RequestParam(name = "text", required = false) String text,
+            @RequestParam(name = "levels", required = false) Set<String> levels,
+            @RequestParam(name = "services", required = false) Set<String> services,
+            @RequestParam(name = "from", required = false) Instant from,
+            @RequestParam(name = "to", required = false) Instant to,
+            @RequestParam(name = "interval", defaultValue = "PT1M") String interval) {
+
+        LogQuery query = createQuery(text, levels, services, from, to);
+
+        Duration duration = Duration.parse(interval);
+
+        return aggregationService.histogram(query, duration);
+    }
+
+    @GetMapping("/count-by")
+    public Map<String, Long> countBy(
+            @RequestParam(name = "field") LogField field,
+            @RequestParam(name = "text", required = false) String text,
+            @RequestParam(name = "levels", required = false) Set<String> levels,
+            @RequestParam(name = "services", required = false) Set<String> services,
+            @RequestParam(name = "from", required = false) Instant from,
+            @RequestParam(name = "to", required = false) Instant to) {
+
+        LogQuery query = createQuery(text, levels, services, from, to);
+
+        return aggregationService.countBy(field, query);
+    }
+
+    private LogQuery createQuery(
+            String text,
+            Set<String> levels,
+            Set<String> services,
+            Instant from,
+            Instant to) {
+
+        return new LogQuery(
+                text,
+                levels,
+                services,
+                from,
+                to,
+                0,
+                LogQuery.DEFAULT_LIMIT
+        );
     }
 }
